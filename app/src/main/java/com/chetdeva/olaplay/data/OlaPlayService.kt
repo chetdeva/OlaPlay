@@ -1,7 +1,7 @@
-package com.chetdeva.olaplay.api
+package com.chetdeva.olaplay.data
 
-import com.chetdeva.olaplay.api.entity.Song
-import io.reactivex.Flowable
+import com.chetdeva.olaplay.data.Song
+import io.reactivex.Single
 import retrofit2.http.GET
 
 /**
@@ -12,5 +12,5 @@ import retrofit2.http.GET
 interface OlaPlayService {
 
     @GET("studio")
-    fun getPlaylist(): Flowable<List<Song>>
+    fun getPlaylist(): Single<List<Song>>
 }

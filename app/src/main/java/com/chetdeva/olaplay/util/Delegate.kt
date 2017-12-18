@@ -1,6 +1,7 @@
 package com.chetdeva.olaplay.util
 
 import android.app.Activity
+import android.databinding.DataBindingComponent
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.annotation.LayoutRes
@@ -34,14 +35,14 @@ class BindActivity<in R: Activity, out T: ViewDataBinding>(
  * use private val binding: FragmentMainBinding by BindFragment(R.layout.fragment_main) instead
  */
 class BindFragment<in R: Fragment, out T: ViewDataBinding>(
-        @LayoutRes private val layoutRes: Int) {
+        @LayoutRes private val layoutRes: Int, private val bindingComponent: DataBindingComponent) {
 
     private var value: T? = null
 
     operator fun getValue(thisRef: R, property: KProperty<*>): T {
         if (value == null) {
             value = DataBindingUtil.inflate(thisRef.layoutInflater, layoutRes,
-                    thisRef.view?.rootView as ViewGroup?, false)
+                    thisRef.view?.rootView as ViewGroup?, false, bindingComponent)
         }
         return value!!
     }

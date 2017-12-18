@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         setContentView(R.layout.activity_main)
 
         if(savedInstanceState == null) {
-            navigator.toAdd(SplashFragment())
+            navigator.toAdd(SplashFragment(), null)
         }
     }
 

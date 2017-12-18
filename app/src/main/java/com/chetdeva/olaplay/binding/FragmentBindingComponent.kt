@@ -10,7 +10,7 @@ import android.support.v4.app.Fragment
 
 public class FragmentBindingComponent constructor(private val fragment: Fragment) : DataBindingComponent {
 
-    val adapter: FragmentBindingAdapters by lazy { FragmentBindingAdapters(fragment) }
+    private val adapter: FragmentBindingAdapters by lazy { FragmentBindingAdapters(fragment) }
 
     override fun getFragmentBindingAdapters(): FragmentBindingAdapters = adapter
 }

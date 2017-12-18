@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -9,56 +8,81 @@
             name="song"
             type="com.chetdeva.olaplay.data.Song" />
 
+        <variable
+            name="playing"
+            type="Boolean" />
+
+        <variable
+            name="callback"
+            type="com.chetdeva.olaplay.ui.PlayerCallback" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:padding="8dp">
 
         <ImageView
             android:id="@+id/cover"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@android:color/darker_gray"
             android:scaleType="centerCrop"
             bind:imageUrl="@{song.cover_image}"
-            bind:layout_constraintBottom_toBottomOf="parent"
-            bind:layout_constraintHorizontal_bias="0.2"
+            bind:layout_constraintDimensionRatio="w,1:1"
+            bind:layout_constraintEnd_toEndOf="parent"
             bind:layout_constraintStart_toStartOf="parent"
             bind:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="0dp"
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:onClick="@{() -> callback.playOrPause(song)}"
+            android:text="@{playing ? @string/play : @string/pause, default=@string/play}"
+            bind:layout_constraintBottom_toTopOf="@+id/name"
+            bind:layout_constraintEnd_toEndOf="parent"
+            bind:layout_constraintStart_toStartOf="parent"
+            bind:layout_constraintTop_toBottomOf="@+id/cover"
+            tools:text="@string/play" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
             android:text="@{song.song}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
+            bind:layout_constraintBottom_toTopOf="@+id/artist"
             bind:layout_constraintEnd_toEndOf="parent"
-            bind:layout_constraintStart_toEndOf="@+id/cover"
-            bind:layout_constraintTop_toTopOf="parent"
+            bind:layout_constraintStart_toStartOf="parent"
+            bind:layout_constraintTop_toBottomOf="@+id/button"
+            tools:layout_editor_absoluteY="442dp"
             tools:text="Song" />
 
         <TextView
             android:id="@+id/artist"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:ellipsize="end"
+            android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
             android:text="@{song.artists}"
@@ -66,7 +90,7 @@
             android:textSize="14sp"
             bind:layout_constraintBottom_toBottomOf="parent"
             bind:layout_constraintEnd_toEndOf="parent"
-            bind:layout_constraintStart_toEndOf="@+id/cover"
+            bind:layout_constraintStart_toStartOf="parent"
             bind:layout_constraintTop_toBottomOf="@+id/name"
             tools:text="Artists" />
 

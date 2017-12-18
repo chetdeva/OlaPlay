@@ -1,5 +1,6 @@
 package com.chetdeva.olaplay.di
 
+import com.chetdeva.olaplay.ui.PlayerFragment
 import com.chetdeva.olaplay.ui.PlaylistFragment
 import com.chetdeva.olaplay.ui.SplashFragment
 
@@ -14,5 +15,8 @@ abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector
     internal abstract fun contributePlaylistFragment(): PlaylistFragment
+
+    @ContributesAndroidInjector
+    internal abstract fun contributePlayerFragment(): PlayerFragment
 
 }

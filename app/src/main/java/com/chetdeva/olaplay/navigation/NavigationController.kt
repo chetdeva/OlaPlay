@@ -1,5 +1,6 @@
 package com.chetdeva.olaplay.navigation
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import com.chetdeva.olaplay.MainActivity
@@ -21,15 +22,15 @@ class NavigationController
     private val containerId = R.id.container
     private val fragmentManager: FragmentManager by lazy { mainActivity.supportFragmentManager }
 
-    fun toAdd(fragment: Fragment) {
-        fragmentManager.add(containerId, fragment, false)
+    fun toAdd(fragment: Fragment, bundle: Bundle?) {
+        fragmentManager.add(containerId, fragment, false, bundle)
     }
 
-    fun toReplace(fragment: Fragment) {
-        fragmentManager.replace(containerId, fragment, false)
+    fun toReplace(fragment: Fragment, bundle: Bundle?) {
+        fragmentManager.replace(containerId, fragment, false, bundle)
     }
 
-    fun toReplacePush(fragment: Fragment) {
-        fragmentManager.replace(containerId, fragment, true)
+    fun toReplacePush(fragment: Fragment, bundle: Bundle?) {
+        fragmentManager.replace(containerId, fragment, true, bundle)
     }
 }

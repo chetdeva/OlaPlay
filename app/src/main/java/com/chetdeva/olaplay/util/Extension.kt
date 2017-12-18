@@ -1,5 +1,6 @@
 package com.chetdeva.olaplay.util
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
@@ -10,20 +11,25 @@ import android.support.v4.app.FragmentTransaction
  */
 
 fun FragmentManager.replace(containerId: Int,
-                                   fragment: Fragment,
-                                   addToBackStack: Boolean): FragmentTransaction {
+                            fragment: Fragment,
+                            addToBackStack: Boolean,
+                            bundle: Bundle?): FragmentTransaction {
+    bundle?.let { fragment.arguments = bundle }
     val transaction = this.beginTransaction()
     transaction.replace(containerId, fragment)
-    if(addToBackStack) transaction.addToBackStack(fragment::class.java.simpleName)
+    if (addToBackStack) transaction.addToBackStack(fragment::class.java.simpleName)
     transaction.commitAllowingStateLoss()
     return transaction
 }
 
 fun FragmentManager.add(containerId: Int,
-                                   fragment: Fragment,
-                                   addToBackStack: Boolean): FragmentTransaction {
+                        fragment: Fragment,
+                        addToBackStack: Boolean,
+                        bundle: Bundle?): FragmentTransaction {
+    bundle?.let { fragment.arguments = bundle }
     val transaction = this.beginTransaction()
     transaction.add(containerId, fragment)
+    if (addToBackStack) transaction.addToBackStack(fragment::class.java.simpleName)
     transaction.commitAllowingStateLoss()
     return transaction
 }

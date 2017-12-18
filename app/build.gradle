@@ -48,6 +48,9 @@ dependencies {
     kapt "com.android.databinding:compiler:$databinding"
 
     implementation "android.arch.lifecycle:extensions:1.0.0"
+    implementation "android.arch.persistence.room:runtime:1.0.0"
+    implementation "android.arch.persistence.room:rxjava2:1.0.0"
+    kapt "android.arch.persistence.room:compiler:1.0.0"
     implementation "android.arch.lifecycle:reactivestreams:1.0.0"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"

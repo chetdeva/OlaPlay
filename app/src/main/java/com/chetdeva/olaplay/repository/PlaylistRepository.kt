@@ -1,8 +1,11 @@
 package com.chetdeva.olaplay.repository
 
-import com.chetdeva.olaplay.api.OlaPlayService
-import com.chetdeva.olaplay.api.entity.Song
+import com.chetdeva.olaplay.data.OlaPlayService
+import com.chetdeva.olaplay.data.Song
+import com.chetdeva.olaplay.data.SongsDao
 import io.reactivex.Flowable
+import io.reactivex.Maybe
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,8 +16,16 @@ import javax.inject.Singleton
 
 @Singleton
 class PlaylistRepository
-@Inject constructor(private val olaPlayService: OlaPlayService) {
+@Inject constructor(private val songsDao: SongsDao,
+                    private val olaPlayService: OlaPlayService) {
 
-    fun getPlaylist(): Flowable<List<Song>> = olaPlayService.getPlaylist()
+    fun getPlaylist(): Flowable<List<Song>> {
+        return Maybe.concat(songsDao.get(),
+                olaPlayService.getPlaylist().toMaybe().doOnSuccess { songsDao.addAll(it) })
+                .subscribeOn(Schedulers.io())
+    }
 
+    fun getSong(url: String): Flowable<Song> {
+        return songsDao.get(url).toFlowable()
+    }
 }

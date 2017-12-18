@@ -14,14 +14,17 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = arrayOf(AndroidInjectionModule::class,
-        AppModule::class, ApiModule::class, MainActivityModule::class))
-public interface AppComponent {
+        AppModule::class, MainActivityModule::class,
+        DataModule::class))
+interface AppComponent {
 
     fun inject(olaPlayApplication: OlaPlayApplication)
 
     @Component.Builder
     interface Builder {
-        @BindsInstance fun application(application: Application): Builder
+        @BindsInstance
+        fun application(application: Application): Builder
+
         fun build(): AppComponent
     }
 }
