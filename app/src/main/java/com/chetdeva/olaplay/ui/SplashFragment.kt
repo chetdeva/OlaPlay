@@ -16,6 +16,7 @@ import com.chetdeva.olaplay.databinding.FragmentSplashBinding
 import com.chetdeva.olaplay.di.Injectable
 import com.chetdeva.olaplay.navigation.NavigationController
 import com.chetdeva.olaplay.util.BindFragment
+import com.chetdeva.olaplay.util.SPLASH_DELAY_IN_MILLIS
 import javax.inject.Inject
 
 
@@ -26,7 +27,6 @@ class SplashFragment : Fragment(), Injectable {
 
     private val bindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private val binding: FragmentSplashBinding by BindFragment(R.layout.fragment_splash, bindingComponent)
-    private val SPLASH_DELAY_IN_MILLIS = 500L
 
     @Inject lateinit var navigate: NavigationController
 

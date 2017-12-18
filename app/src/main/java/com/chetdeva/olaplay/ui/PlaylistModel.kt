@@ -20,6 +20,7 @@ class PlaylistModel
     : ViewModel() {
 
     val songs: LiveData<List<Song>>
+    lateinit var song: LiveData<Song>
 
     init {
         songs = getPlaylistRepository()
@@ -34,9 +35,10 @@ class PlaylistModel
     }
 
     fun getSong(url: String): LiveData<Song> {
-        return playlistRepository.getSong(url)
+        song = playlistRepository.getSong(url)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .toLiveData()
+        return song
     }
 }

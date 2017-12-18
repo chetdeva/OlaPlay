@@ -1,7 +1,6 @@
 package com.chetdeva.olaplay.di
 
 import android.media.AudioManager
-import android.media.MediaPlayer
 import com.chetdeva.olaplay.rx.SchedulerProvider
 import com.chetdeva.olaplay.rx.SchedulerProviderImpl
 import dagger.Module
@@ -9,6 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 import android.media.AudioAttributes
 import android.os.Build
+import com.chetdeva.olaplay.util.OlaMediaPlayer
 
 
 /**
@@ -25,8 +25,8 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideMediaPlayer(): MediaPlayer {
-        val mediaPlayer = MediaPlayer()
+    fun provideMediaPlayer(): OlaMediaPlayer {
+        val mediaPlayer = OlaMediaPlayer()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val aa = AudioAttributes.Builder()
                     .setUsage(AudioAttributes.USAGE_MEDIA)

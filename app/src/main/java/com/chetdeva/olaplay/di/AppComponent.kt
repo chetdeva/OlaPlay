@@ -2,6 +2,8 @@ package com.chetdeva.olaplay.di
 
 import android.app.Application
 import com.chetdeva.olaplay.OlaPlayApplication
+import com.chetdeva.olaplay.data.OlaPlayService
+import com.chetdeva.olaplay.service.PlayerService
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -19,6 +21,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(olaPlayApplication: OlaPlayApplication)
+    fun inject(playService: PlayerService)
 
     @Component.Builder
     interface Builder {

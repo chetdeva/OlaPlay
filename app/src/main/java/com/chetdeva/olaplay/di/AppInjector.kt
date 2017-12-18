@@ -20,8 +20,6 @@ object AppInjector {
 
     fun init(olaPlayApplication: OlaPlayApplication) {
 
-        DaggerAppComponent.builder().application(olaPlayApplication).build().inject(olaPlayApplication)
-
         olaPlayApplication.registerActivityLifecycleCallbacks(object : Application.ActivityLifecycleCallbacks {
             override fun onActivityPaused(activity: Activity?) {
             }

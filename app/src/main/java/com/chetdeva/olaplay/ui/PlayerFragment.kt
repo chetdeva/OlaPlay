@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingComponent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -17,8 +16,10 @@ import com.chetdeva.olaplay.binding.FragmentDataBindingComponent
 import com.chetdeva.olaplay.data.Song
 import com.chetdeva.olaplay.databinding.FragmentPlayerBinding
 import com.chetdeva.olaplay.di.Injectable
-import com.chetdeva.olaplay.util.BindFragment
 import javax.inject.Inject
+import android.content.Intent
+import com.chetdeva.olaplay.service.PlayerService
+import com.chetdeva.olaplay.util.*
 
 
 /**
@@ -30,7 +31,7 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback {
     private val binding: FragmentPlayerBinding by BindFragment(R.layout.fragment_player, bindingComponent)
 
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var mediaPlayer: MediaPlayer
+    @Inject lateinit var mediaPlayer: OlaMediaPlayer
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? = binding.root
@@ -41,59 +42,37 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback {
 
         val playlistModel = ViewModelProviders.of(this, viewModelFactory).get(PlaylistModel::class.java)
 
-        val songUrl: String = arguments.getString("song_url")
-        playlistModel.getSong(songUrl).observe(this, Observer {
-            it?.let {
-                binding.song = it
-                play(it)
-            }
-        })
+        playlistModel.getSong(getSongUrl(arguments))
+                .observe(this, Observer {
+                    it?.let {
+                        binding.song = it
+                        if (mediaPlayer.urlPlaying == it.url) {
+                            binding.playing = mediaPlayer.isPlaying
+                        } else {
+                            mediaPlayer.stop()
+                            mediaPlayer.reset()
+                            playOrPause(it)
+                        }
+                    }
+                })
     }
+
+    private fun getSongUrl(arguments: Bundle) = arguments.getString(SONG_URL)
 
     override fun playOrPause(song: Song) {
-        if (!mediaPlayer.isPlaying) {
-            play(song)
-        } else {
-            pause(song)
-        }
-    }
-
-    private fun play(song: Song) {
-        if (mediaPlayer.isPlaying) {
-            return
-        }
-        binding.playing = false
-        try {
-            mediaPlayer.setDataSource(song.url)
-            mediaPlayer.prepareAsync()
-            mediaPlayer.setOnPreparedListener({
-                mediaPlayer.start()
-            })
-        } catch (ex: IllegalStateException) {
-            ex.printStackTrace()
-        }
-        if (!mediaPlayer.isPlaying) {
-            mediaPlayer.start()
-        }
-    }
-
-    private fun pause(song: Song) {
-        if (mediaPlayer.isPlaying) {
+        if (!mediaPlayer.isPlaying) {   // play
             binding.playing = true
-            mediaPlayer.pause()
+            val intent = Intent(activity, PlayerService::class.java)
+            intent.action = PLAY_ACTION
+            intent.putExtra(SONG_URL, song.url)
+            activity.startService(intent)
+        } else {                        // pause
+            binding.playing = false
+            val intent = Intent(activity, PlayerService::class.java)
+            intent.action = PAUSE_ACTION
+            intent.putExtra(SONG_URL, song.url)
+            activity.startService(intent)
         }
     }
 
-    private fun stop(song: Song) {
-        if (mediaPlayer.isPlaying) {
-            mediaPlayer.stop()
-        }
-    }
-
-    override fun onDestroy() {
-        mediaPlayer.stop()
-        mediaPlayer.reset()
-        super.onDestroy()
-    }
-
-}// Required empty public constructor
+}

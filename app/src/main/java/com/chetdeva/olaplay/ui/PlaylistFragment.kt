@@ -17,6 +17,7 @@ import com.chetdeva.olaplay.databinding.FragmentPlaylistBinding
 import com.chetdeva.olaplay.di.Injectable
 import com.chetdeva.olaplay.navigation.NavigationController
 import com.chetdeva.olaplay.util.BindFragment
+import com.chetdeva.olaplay.util.SONG_URL
 import javax.inject.Inject
 
 
@@ -27,7 +28,7 @@ class PlaylistFragment : Fragment(), Injectable, PlaylistAdapter.SongClickCallba
 
     private val bindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private val binding: FragmentPlaylistBinding by BindFragment(R.layout.fragment_playlist, bindingComponent)
-    private lateinit var playlistAdapter: PlaylistAdapter
+    private val playlistAdapter: PlaylistAdapter by lazy { PlaylistAdapter(bindingComponent, this) }
 
     @Inject lateinit var navigate: NavigationController
     @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -40,7 +41,6 @@ class PlaylistFragment : Fragment(), Injectable, PlaylistAdapter.SongClickCallba
 
         val playlistModel = ViewModelProviders.of(this, viewModelFactory).get(PlaylistModel::class.java)
 
-        playlistAdapter = PlaylistAdapter(bindingComponent, this)
         binding.playlist.adapter = playlistAdapter
 
         playlistModel.songs.observe(this, Observer {
@@ -55,7 +55,7 @@ class PlaylistFragment : Fragment(), Injectable, PlaylistAdapter.SongClickCallba
 
     private fun getBundle(song: Song): Bundle {
         val bundle = Bundle()
-        bundle.putString("song_url", song.url)
+        bundle.putString(SONG_URL, song.url)
         return bundle
     }
 }

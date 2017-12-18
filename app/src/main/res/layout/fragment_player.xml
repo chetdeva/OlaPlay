@@ -20,6 +20,8 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/white"
         android:padding="8dp">
 
         <ImageView
@@ -37,21 +39,22 @@
             bind:layout_constraintStart_toStartOf="parent"
             bind:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <ImageView
             android:id="@+id/button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:background="@drawable/bg_play"
             android:onClick="@{() -> callback.playOrPause(song)}"
-            android:text="@{playing ? @string/play : @string/pause, default=@string/play}"
+            android:scaleType="center"
+            android:src="@{playing ? @drawable/ic_pause : @drawable/ic_play, default=@drawable/ic_play}"
             bind:layout_constraintBottom_toTopOf="@+id/name"
             bind:layout_constraintEnd_toEndOf="parent"
             bind:layout_constraintStart_toStartOf="parent"
-            bind:layout_constraintTop_toBottomOf="@+id/cover"
-            tools:text="@string/play" />
+            bind:layout_constraintTop_toBottomOf="@+id/cover" />
 
         <TextView
             android:id="@+id/name"
