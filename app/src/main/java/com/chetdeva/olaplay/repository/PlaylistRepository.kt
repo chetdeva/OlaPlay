@@ -1,7 +1,7 @@
 package com.chetdeva.olaplay.repository
 
 import com.chetdeva.olaplay.data.OlaPlayService
-import com.chetdeva.olaplay.data.Song
+import com.chetdeva.olaplay.data.dto.Song
 import com.chetdeva.olaplay.data.SongsDao
 import io.reactivex.Flowable
 import io.reactivex.Maybe

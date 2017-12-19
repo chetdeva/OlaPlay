@@ -1,6 +1,6 @@
 package com.chetdeva.olaplay.data
 
-import com.chetdeva.olaplay.data.Song
+import com.chetdeva.olaplay.data.dto.Song
 import io.reactivex.Single
 import retrofit2.http.GET
 

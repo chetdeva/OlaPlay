@@ -1,14 +1,15 @@
 package com.chetdeva.olaplay.di
 
-import android.media.AudioManager
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
+import com.chetdeva.olaplay.notification.OlaNotificationManager
 import com.chetdeva.olaplay.rx.SchedulerProvider
 import com.chetdeva.olaplay.rx.SchedulerProviderImpl
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
-import android.media.AudioAttributes
-import android.os.Build
-import com.chetdeva.olaplay.util.OlaMediaPlayer
+import com.chetdeva.olaplay.util.BuildInfoHelper
 
 
 /**
@@ -19,23 +20,25 @@ import com.chetdeva.olaplay.util.OlaMediaPlayer
 @Module
 class AppModule {
 
-    @Singleton
     @Provides
-    fun provideSchedulers(providerImpl: SchedulerProviderImpl): SchedulerProvider = providerImpl
+    @Singleton
+    fun provideBuildInfo(application: Application) =
+            BuildInfoHelper.getBuildInfo(application)
 
     @Singleton
     @Provides
-    fun provideMediaPlayer(): OlaMediaPlayer {
-        val mediaPlayer = OlaMediaPlayer()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val aa = AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            mediaPlayer.setAudioAttributes(aa)
-        } else {
-            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC)
-        }
-        return mediaPlayer
-    }
+    fun provideSchedulers(providerImpl: SchedulerProviderImpl): SchedulerProvider =
+            providerImpl
+
+    @Provides
+    @Singleton
+    fun provideConnectivityManager(application: Application) =
+            application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+    @Provides
+    @Singleton
+    fun provideOlaNotificationManager(application: Application) =
+            OlaNotificationManager(application)
+
+
 }

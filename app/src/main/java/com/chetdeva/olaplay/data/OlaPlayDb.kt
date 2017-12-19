@@ -2,6 +2,7 @@ package com.chetdeva.olaplay.data
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
+import com.chetdeva.olaplay.data.dto.Song
 
 /**
  * Copyright (c) 2017 Fueled. All rights reserved.

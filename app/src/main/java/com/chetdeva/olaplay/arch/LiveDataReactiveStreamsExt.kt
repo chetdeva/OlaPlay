@@ -1,4 +1,4 @@
-package com.chetdeva.olaplay.util
+package com.chetdeva.olaplay.arch
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData

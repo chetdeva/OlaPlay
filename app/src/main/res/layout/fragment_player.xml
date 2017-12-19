@@ -1,89 +1,138 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
+
+        <import type="android.view.View" />
+
         <variable
             name="song"
-            type="com.chetdeva.olaplay.data.Song" />
+            type="com.chetdeva.olaplay.data.dto.Song" />
 
         <variable
             name="playing"
-            type="Boolean" />
+            type="boolean" />
+
+        <variable
+            name="loading"
+            type="boolean" />
+
+        <variable
+            name="downloading"
+            type="boolean" />
 
         <variable
             name="callback"
-            type="com.chetdeva.olaplay.ui.PlayerCallback" />
+            type="com.chetdeva.olaplay.core.PlayerCallback" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:background="@android:color/white"
+        android:fitsSystemWindows="true"
         android:padding="8dp">
 
         <ImageView
             android:id="@+id/cover"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
             android:background="@android:color/darker_gray"
             android:scaleType="centerCrop"
-            bind:imageUrl="@{song.cover_image}"
-            bind:layout_constraintDimensionRatio="w,1:1"
-            bind:layout_constraintEnd_toEndOf="parent"
-            bind:layout_constraintStart_toStartOf="parent"
-            bind:layout_constraintTop_toTopOf="parent" />
+            app:imageUrl="@{song.cover_image}"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+        <ImageButton
+            android:id="@+id/play"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_play"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/play"
             android:onClick="@{() -> callback.playOrPause(song)}"
             android:scaleType="center"
             android:src="@{playing ? @drawable/ic_pause : @drawable/ic_play, default=@drawable/ic_play}"
-            bind:layout_constraintBottom_toTopOf="@+id/name"
-            bind:layout_constraintEnd_toEndOf="parent"
-            bind:layout_constraintStart_toStartOf="parent"
-            bind:layout_constraintTop_toBottomOf="@+id/cover" />
+            app:enabled="@{!loading}"
+            app:layout_constraintBottom_toTopOf="@+id/name"
+            app:layout_constraintEnd_toStartOf="@+id/download"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/stop"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/stop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/stop"
+            android:onClick="@{() -> callback.stop(song)}"
+            android:scaleType="center"
+            android:src="@drawable/ic_stop"
+            app:enabled="@{!loading}"
+            app:layout_constraintBottom_toTopOf="@+id/name"
+            app:layout_constraintEnd_toStartOf="@+id/play"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar"
+            tools:visibility="visible" />
+
+        <ImageButton
+            android:id="@+id/download"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_circle_button"
+            android:contentDescription="@string/download"
+            android:onClick="@{() -> callback.download(song)}"
+            android:scaleType="center"
+            android:src="@drawable/ic_download"
+            app:enabled="@{!loading &amp;&amp; !downloading}"
+            app:layout_constraintBottom_toTopOf="@+id/name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/play"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar"
+            tools:visibility="visible" />
 
         <TextView
             android:id="@+id/name"
-            android:layout_width="wrap_content"
+            android:layout_width="352dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="@{song.song}"
+            android:text="@{loading ? @string/loading : song.song, default=@string/song}"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            bind:layout_constraintBottom_toTopOf="@+id/artist"
-            bind:layout_constraintEnd_toEndOf="parent"
-            bind:layout_constraintStart_toStartOf="parent"
-            bind:layout_constraintTop_toBottomOf="@+id/button"
-            tools:layout_editor_absoluteY="442dp"
+            app:layout_constraintBottom_toTopOf="@+id/artist"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:text="Song" />
 
         <TextView
             android:id="@+id/artist"
-            android:layout_width="wrap_content"
+            android:layout_width="352dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
@@ -91,11 +140,24 @@
             android:text="@{song.artists}"
             android:textColor="@android:color/darker_gray"
             android:textSize="14sp"
-            bind:layout_constraintBottom_toBottomOf="parent"
-            bind:layout_constraintEnd_toEndOf="parent"
-            bind:layout_constraintStart_toStartOf="parent"
-            bind:layout_constraintTop_toBottomOf="@+id/name"
-            tools:text="Artists" />
+            android:visibility="@{!loading ? View.VISIBLE : View.INVISIBLE, default=gone}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Artists"
+            tools:visibility="visible" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cover" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

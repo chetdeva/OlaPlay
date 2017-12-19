@@ -1,6 +1,6 @@
-package com.chetdeva.olaplay.ui
+package com.chetdeva.olaplay.core
 
-import com.chetdeva.olaplay.data.Song
+import com.chetdeva.olaplay.data.dto.Song
 
 /**
  * Copyright (c) 2017 Fueled. All rights reserved.
@@ -9,4 +9,8 @@ import com.chetdeva.olaplay.data.Song
 interface PlayerCallback {
 
     fun playOrPause(song: Song)
+
+    fun stop(song: Song)
+
+    fun download(song: Song)
 }

@@ -11,7 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 
 import com.chetdeva.olaplay.R
-import com.chetdeva.olaplay.data.Song
+import com.chetdeva.olaplay.arch.PlaylistModel
+import com.chetdeva.olaplay.data.dto.Song
 import com.chetdeva.olaplay.binding.FragmentDataBindingComponent
 import com.chetdeva.olaplay.databinding.FragmentPlaylistBinding
 import com.chetdeva.olaplay.di.Injectable

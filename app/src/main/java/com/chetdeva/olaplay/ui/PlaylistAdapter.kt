@@ -5,7 +5,7 @@ import android.databinding.DataBindingUtil
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.chetdeva.olaplay.R
-import com.chetdeva.olaplay.data.Song
+import com.chetdeva.olaplay.data.dto.Song
 import com.chetdeva.olaplay.binding.DataBoundListAdapter
 import com.chetdeva.olaplay.databinding.ItemSongBinding
 import java.util.*

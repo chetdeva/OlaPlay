@@ -2,8 +2,9 @@ package com.chetdeva.olaplay.di
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.chetdeva.olaplay.ui.PlaylistModel
-import com.chetdeva.olaplay.util.OlaPlayViewModelFactory
+import com.chetdeva.olaplay.arch.PlaylistModel
+import com.chetdeva.olaplay.arch.OlaPlayViewModelFactory
+import com.chetdeva.olaplay.arch.PlayerModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -20,6 +21,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PlaylistModel::class)
     internal abstract fun bindPlaylistModel(playlistModel: PlaylistModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlayerModel::class)
+    internal abstract fun bindPlayerModel(playerModel: PlayerModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFactory(factory: OlaPlayViewModelFactory): ViewModelProvider.Factory

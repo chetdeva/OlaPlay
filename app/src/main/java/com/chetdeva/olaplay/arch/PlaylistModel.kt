@@ -1,11 +1,10 @@
-package com.chetdeva.olaplay.ui
+package com.chetdeva.olaplay.arch
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
-import com.chetdeva.olaplay.data.Song
+import com.chetdeva.olaplay.data.dto.Song
 import com.chetdeva.olaplay.repository.PlaylistRepository
 import com.chetdeva.olaplay.rx.SchedulerProvider
-import com.chetdeva.olaplay.util.toLiveData
 import io.reactivex.Flowable
 import javax.inject.Inject
 

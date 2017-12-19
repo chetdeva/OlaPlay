@@ -1,9 +1,11 @@
 package com.chetdeva.olaplay.util
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import android.widget.Toast
 
 /**
  * Copyright (c) 2017 Fueled. All rights reserved.
@@ -32,4 +34,8 @@ fun FragmentManager.add(containerId: Int,
     if (addToBackStack) transaction.addToBackStack(fragment::class.java.simpleName)
     transaction.commitAllowingStateLoss()
     return transaction
+}
+
+fun Activity.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
