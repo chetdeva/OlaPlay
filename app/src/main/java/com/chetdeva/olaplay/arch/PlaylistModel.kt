@@ -7,12 +7,14 @@ import com.chetdeva.olaplay.repository.PlaylistRepository
 import com.chetdeva.olaplay.rx.SchedulerProvider
 import io.reactivex.Flowable
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Copyright (c) 2017 Fueled. All rights reserved.
  * @author chetansachdeva on 16/12/17
  */
 
+@Singleton
 class PlaylistModel
 @Inject constructor(private val playlistRepository: PlaylistRepository,
                     private val schedulerProvider: SchedulerProvider)

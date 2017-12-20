@@ -17,10 +17,9 @@ import com.chetdeva.olaplay.databinding.FragmentPlayerBinding
 import com.chetdeva.olaplay.di.Injectable
 import javax.inject.Inject
 import android.content.Intent
-import android.widget.SeekBar
 import com.chetdeva.olaplay.arch.PlayerModel
-import com.chetdeva.olaplay.core.PlayerCallback
-import com.chetdeva.olaplay.download.SongDownloadState
+import com.chetdeva.olaplay.player.OlaPlayerCallback
+import com.chetdeva.olaplay.download.OlaDownloadState
 import com.chetdeva.olaplay.player.OlaPlayer
 import com.chetdeva.olaplay.player.OlaPlayerService
 import com.chetdeva.olaplay.util.*
@@ -29,7 +28,7 @@ import io.reactivex.disposables.CompositeDisposable
 /**
  * A simple [Fragment] subclass.
  */
-class PlayerFragment : Fragment(), Injectable, PlayerCallback, SeekBar.OnSeekBarChangeListener {
+class OlaPlayerFragment : Fragment(), Injectable, OlaPlayerCallback {
 
     private val bindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
     private val binding: FragmentPlayerBinding by BindFragment(R.layout.fragment_player, bindingComponent)
@@ -46,21 +45,22 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback, SeekBar.OnSeekBar
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.callback = this
-        binding.seekBar.setOnSeekBarChangeListener(this)
 
         playerModel = ViewModelProviders.of(this, viewModelFactory).get(PlayerModel::class.java)
 
         playerModel.getSong(getSongUrl(arguments)).observe(this,
                 Observer { it?.let { init(it) } })
 
-        playerModel.songDownloadState.observe(this,
+        subscribeToDownloadUpdates()
+    }
+
+    private fun subscribeToDownloadUpdates() {
+        playerModel.olaDownloadState.observe(this,
                 Observer {
                     when (it) {
-                        SongDownloadState.READY -> {
-                        }
-                        SongDownloadState.DOWNLOADING -> binding.downloading = true
-                        SongDownloadState.DOWNLOADED_ALREADY -> binding.downloading = false
-                        SongDownloadState.DOWNLOAD_COMPLETE -> {
+                        OlaDownloadState.DOWNLOADING -> binding.downloading = true
+                        OlaDownloadState.DOWNLOADED_ALREADY -> binding.downloading = false
+                        OlaDownloadState.DOWNLOAD_COMPLETE -> {
                             binding.downloading = false
                             activity.showToast("Song downloaded successfully.")
                         }
@@ -73,38 +73,20 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback, SeekBar.OnSeekBar
 
     private fun init(song: Song) {
         binding.song = song
-        if (player.pathPlaying != song.url) {
+        if (player.urlPlaying != song.url) {
             player.stopAndReset()
             playOrPause(song)
-            loadAndSeek(song)
+            load(song)
         } else {
             binding.playing = player.isPlaying
         }
     }
 
-    private fun loadAndSeek(song: Song) {
+    private fun load(song: Song) {
         binding.loading = true
         disposables.add(player.readyStateDisposable {
             binding.loading = false
-            seek(song)
         })
-    }
-
-    private fun seek(song: Song) {
-//        binding.seekBar.max = player.duration
-//        binding.seekBar.postDelayed({ binding.seekBar.progress = player.currentPosition / 1000 }, 200)
-    }
-
-    override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-        player.seekTo(p1 * 1000)
-    }
-
-    override fun onStartTrackingTouch(p0: SeekBar?) {
-
-    }
-
-    override fun onStopTrackingTouch(p0: SeekBar?) {
-
     }
 
     private fun getSongUrl(arguments: Bundle) = arguments.getString(SONG_URL)

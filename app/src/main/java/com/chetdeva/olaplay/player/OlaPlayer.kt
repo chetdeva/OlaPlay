@@ -10,25 +10,17 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 /**
- * A wrapper class for [android.media.MediaPlayer].
- *
- *
- * Encapsulates an instance of MediaPlayer, and makes a record of its internal state accessible via a
- * [MediaPlayerWrapper.getState] accessor. Most of the frequently used methods are available, but some still
- * need adding.
- *
+ * Copyright (c) 2017 Fueled. All rights reserved.
+ * @author chetansachdeva on 18/12/17
  */
 class OlaPlayer
 @Inject constructor(private val fileProvider: OlaFileProvider) {
 
-    val player: MediaPlayer by lazy { MediaPlayer() }
-    val isPlaying: Boolean get() = player.isPlaying
-    val ready: PublishSubject<Boolean> = PublishSubject.create()
+    private val player: MediaPlayer by lazy { MediaPlayer() }
+
     fun readyStateDisposable(onReady: () -> Unit): Disposable {
         return ready.subscribe { if (it) onReady() }
     }
-
-    var pathPlaying: String? = null
 
     fun setAudioAttributesForMusic() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -64,7 +56,7 @@ class OlaPlayer
     }
 
     private fun setDataSource(url: String) {
-        pathPlaying = url
+        urlPlaying = url
         if (fileProvider.isFileDownloaded(url)) {
             player.setDataSource(fileProvider.getDownloadedFile(url)?.absolutePath)
         } else {
@@ -87,7 +79,11 @@ class OlaPlayer
         if (isPlaying) player.stop()
     }
 
-    fun seekTo(mesc: Int) {
-        if (isPlaying) player.seekTo(mesc)
+    fun seekTo(msec: Int) {
+        if (isPlaying) player.seekTo(msec)
     }
+
+    val isPlaying: Boolean get() = player.isPlaying
+    var urlPlaying: String? = null
+    val ready: PublishSubject<Boolean> = PublishSubject.create()
 }

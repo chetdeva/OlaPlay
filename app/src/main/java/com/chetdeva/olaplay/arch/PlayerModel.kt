@@ -5,18 +5,20 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.chetdeva.olaplay.data.dto.DownloadItem
 import com.chetdeva.olaplay.data.dto.Song
-import com.chetdeva.olaplay.download.SongDownloadState
+import com.chetdeva.olaplay.download.OlaDownloadState
 import com.chetdeva.olaplay.download.OlaDownloadManager
 import com.chetdeva.olaplay.repository.PlaylistRepository
 import com.chetdeva.olaplay.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Copyright (c) 2017 Fueled. All rights reserved.
  * @author chetansachdeva on 16/12/17
  */
 
+@Singleton
 class PlayerModel
 @Inject constructor(private val playlistRepository: PlaylistRepository,
                     private val schedulerProvider: SchedulerProvider,
@@ -24,7 +26,7 @@ class PlayerModel
     : ViewModel() {
 
     private val compositeDisposable by lazy { CompositeDisposable() }
-    val songDownloadState: MutableLiveData<SongDownloadState> = MutableLiveData()
+    val olaDownloadState: MutableLiveData<OlaDownloadState> = MutableLiveData()
     private var urlToDownload: String = ""
     lateinit var song: LiveData<Song>
 
@@ -55,12 +57,12 @@ class PlayerModel
 
     fun addToDownloadQueue(url: String, id: String, name: String) {
         this.urlToDownload = url
-        songDownloadState.postValue(SongDownloadState.DOWNLOADING)
+        olaDownloadState.postValue(OlaDownloadState.DOWNLOADING)
         downloader.addToDownloadQueue(DownloadItem(url, id, name))
     }
 
-    private fun updateDownloadState(state: SongDownloadState) {
-        songDownloadState.postValue(state)
+    private fun updateDownloadState(state: OlaDownloadState) {
+        olaDownloadState.postValue(state)
     }
 
 }

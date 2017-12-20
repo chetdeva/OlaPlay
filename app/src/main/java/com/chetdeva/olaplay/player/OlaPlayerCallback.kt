@@ -1,4 +1,4 @@
-package com.chetdeva.olaplay.core
+package com.chetdeva.olaplay.player
 
 import com.chetdeva.olaplay.data.dto.Song
 
@@ -6,7 +6,7 @@ import com.chetdeva.olaplay.data.dto.Song
  * Copyright (c) 2017 Fueled. All rights reserved.
  * @author chetansachdeva on 18/12/17
  */
-interface PlayerCallback {
+interface OlaPlayerCallback {
 
     fun playOrPause(song: Song)
 

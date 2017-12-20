@@ -29,13 +29,16 @@ class OlaNotificationManager
                 .setContentIntent(getPendingIntent(song.url))
 
         when (action) {
-            PLAY_ACTION -> builder.addAction(NotificationCompat.Action.Builder(R.drawable.ic_pause, "PAUSE",
+            PLAY_ACTION -> builder.addAction(NotificationCompat.Action.Builder(R.drawable.ic_pause,
+                    application.getString(R.string.pause),
                     getActionPendingIntent(PAUSE_ACTION, song)).build())
 
-            PAUSE_ACTION, STOP_ACTION -> builder.addAction(NotificationCompat.Action.Builder(R.drawable.ic_play, "PLAY",
+            PAUSE_ACTION, STOP_ACTION -> builder.addAction(NotificationCompat.Action.Builder(R.drawable.ic_play,
+                    application.getString(R.string.pause),
                     getActionPendingIntent(PLAY_ACTION, song)).build())
         }
-        builder.addAction(NotificationCompat.Action.Builder(R.drawable.ic_stop, "STOP",
+        builder.addAction(NotificationCompat.Action.Builder(R.drawable.ic_stop,
+                application.getString(R.string.stop),
                 getActionPendingIntent(RESET_ACTION, song)).build())
         return builder.build()
     }

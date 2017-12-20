@@ -51,7 +51,7 @@ class PlaylistFragment : Fragment(), Injectable, PlaylistAdapter.SongClickCallba
     }
 
     override fun onClick(song: Song) {
-        navigate.toReplacePush(PlayerFragment(), getBundle(song))
+        navigate.toReplacePush(OlaPlayerFragment(), getBundle(song))
     }
 
     private fun getBundle(song: Song): Bundle {

@@ -70,7 +70,7 @@ class OlaDownloadManager
             item.file = fileProvider.getDownloadedFile(item.url)
             item.isLoadedFromCache = true
             item.endTime = System.currentTimeMillis()
-            item.state = SongDownloadState.DOWNLOAD_COMPLETE
+            item.state = OlaDownloadState.DOWNLOAD_COMPLETE
 
             downloadStatePublisher.onNext(item)
         } else if (!downloading.contains(item)) {
@@ -100,7 +100,7 @@ class OlaDownloadManager
                 .subscribe({ file ->
                     item.file = file
                     item.endTime = System.currentTimeMillis()
-                    item.state = SongDownloadState.DOWNLOAD_COMPLETE
+                    item.state = OlaDownloadState.DOWNLOAD_COMPLETE
 
                     downloadStatePublisher.onNext(item)
                     downloading.remove(item)

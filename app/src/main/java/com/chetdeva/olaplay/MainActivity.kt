@@ -4,7 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.chetdeva.olaplay.navigation.NavigationController
-import com.chetdeva.olaplay.ui.PlayerFragment
+import com.chetdeva.olaplay.ui.OlaPlayerFragment
 import com.chetdeva.olaplay.ui.PlaylistFragment
 import com.chetdeva.olaplay.ui.SplashFragment
 import com.chetdeva.olaplay.util.NAVIGATE_TO
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
         if (isFromNotification()) {
             if (intent.getStringExtra(NAVIGATE_TO) == NAVIGATE_TO_PLAYER) {
                 navigate.toAdd(PlaylistFragment(), null)
-                navigate.toReplacePush(PlayerFragment(), getBundle(intent.getStringExtra(SONG_URL)))
+                navigate.toReplacePush(OlaPlayerFragment(), getBundle(intent.getStringExtra(SONG_URL)))
             }
             return
         }
