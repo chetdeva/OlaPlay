@@ -20,11 +20,10 @@ import javax.inject.Inject
  */
 class OlaPlayer
 @Inject constructor(private val fileProvider: OlaFileProvider) {
-    private val tag = "MediaPlayerWrapper"
 
-    val mp: MediaPlayer by lazy { MediaPlayer() }
+    val player: MediaPlayer by lazy { MediaPlayer() }
+    val isPlaying: Boolean get() = player.isPlaying
     val ready: PublishSubject<Boolean> = PublishSubject.create()
-
     fun readyStateDisposable(onReady: () -> Unit): Disposable {
         return ready.subscribe { if (it) onReady() }
     }
@@ -37,58 +36,58 @@ class OlaPlayer
                     .setUsage(AudioAttributes.USAGE_MEDIA)
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build()
-            mp.setAudioAttributes(aa)
+            player.setAudioAttributes(aa)
         } else {
-            mp.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC)
         }
     }
 
     fun play(url: String) {
-        if (mp.isPlaying) {
+        if (isPlaying) {
             ready.onNext(true)
             return
         }
         try {
             ready.onNext(false)
             setDataSource(url)
-            mp.prepareAsync()
-            mp.setOnPreparedListener({
+            player.prepareAsync()
+            player.setOnPreparedListener({
                 ready.onNext(true)
-                mp.start()
+                player.start()
             })
         } catch (ex: IllegalStateException) {
             ex.printStackTrace()
         }
-        if (!mp.isPlaying) {
-            mp.start()
+        if (!isPlaying) {
+            player.start()
         }
     }
 
     private fun setDataSource(url: String) {
         pathPlaying = url
         if (fileProvider.isFileDownloaded(url)) {
-            mp.setDataSource(fileProvider.getDownloadedFile(url)?.absolutePath)
+            player.setDataSource(fileProvider.getDownloadedFile(url)?.absolutePath)
         } else {
-            mp.setDataSource(url)
+            player.setDataSource(url)
         }
     }
 
     fun stopAndReset() {
-        if (mp.isPlaying) {
-            mp.stop()
-            mp.reset()
+        if (isPlaying) {
+            player.stop()
+            player.reset()
         }
     }
 
     fun pause() {
-        if (mp.isPlaying) mp.pause()
+        if (isPlaying) player.pause()
     }
 
     fun stop() {
-        if (mp.isPlaying) mp.stop()
+        if (isPlaying) player.stop()
     }
 
     fun seekTo(mesc: Int) {
-        if (mp.isPlaying) mp.seekTo(mesc)
+        if (isPlaying) player.seekTo(mesc)
     }
 }

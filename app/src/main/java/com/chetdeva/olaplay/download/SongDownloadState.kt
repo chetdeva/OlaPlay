@@ -3,6 +3,7 @@ package com.chetdeva.olaplay.download
 enum class SongDownloadState {
     NONE,
     DOWNLOADING,
-    DOWNLOADED,
+    DOWNLOADED_ALREADY,
+    DOWNLOAD_COMPLETE,
     READY
 }

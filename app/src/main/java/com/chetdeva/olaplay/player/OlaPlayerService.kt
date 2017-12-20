@@ -43,7 +43,7 @@ class OlaPlayerService : Service() {
 
     private fun notify(action: String, song: Song) {
         val notification = notifier.showNotification(action, song)
-        if (action == PLAY_ACTION && !player.mp.isPlaying) {
+        if (action == PLAY_ACTION && !player.isPlaying) {
             disposables.add(player.readyStateDisposable({ startForeground(PLAYER_SERVICE_ID, notification) }))
         } else {
             startForeground(PLAYER_SERVICE_ID, notification)

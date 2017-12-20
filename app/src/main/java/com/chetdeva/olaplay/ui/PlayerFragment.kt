@@ -59,7 +59,8 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback, SeekBar.OnSeekBar
                         SongDownloadState.READY -> {
                         }
                         SongDownloadState.DOWNLOADING -> binding.downloading = true
-                        SongDownloadState.DOWNLOADED -> {
+                        SongDownloadState.DOWNLOADED_ALREADY -> binding.downloading = false
+                        SongDownloadState.DOWNLOAD_COMPLETE -> {
                             binding.downloading = false
                             activity.showToast("Song downloaded successfully.")
                         }
@@ -77,7 +78,7 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback, SeekBar.OnSeekBar
             playOrPause(song)
             loadAndSeek(song)
         } else {
-            binding.playing = player.mp.isPlaying
+            binding.playing = player.isPlaying
         }
     }
 
@@ -90,8 +91,8 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback, SeekBar.OnSeekBar
     }
 
     private fun seek(song: Song) {
-//        binding.seekBar.max = mp.duration
-//        binding.seekBar.postDelayed({ binding.seekBar.progress = mp.currentPosition / 1000 }, 200)
+//        binding.seekBar.max = player.duration
+//        binding.seekBar.postDelayed({ binding.seekBar.progress = player.currentPosition / 1000 }, 200)
     }
 
     override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -109,7 +110,7 @@ class PlayerFragment : Fragment(), Injectable, PlayerCallback, SeekBar.OnSeekBar
     private fun getSongUrl(arguments: Bundle) = arguments.getString(SONG_URL)
 
     override fun playOrPause(song: Song) {
-        if (!player.mp.isPlaying) {        // play
+        if (!player.isPlaying) {        // play
             play(song)
         } else {                        // pause
             pause(song)

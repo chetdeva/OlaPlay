@@ -46,7 +46,7 @@ class PlayerModel
                 .observeOn(schedulerProvider.ui())
                 .subscribe({ d ->
                     if (urlToDownload.isNotBlank() && d.url == urlToDownload) {
-                            updateDownloadState(d.state)
+                        updateDownloadState(d.state)
                     }
                 }, { println(it) })
 

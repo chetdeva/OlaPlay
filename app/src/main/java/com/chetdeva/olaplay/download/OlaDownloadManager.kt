@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import com.chetdeva.olaplay.data.dto.DownloadItem
 import com.chetdeva.olaplay.rx.SchedulerProvider
-import com.chetdeva.olaplay.util.DigestProvider
 import io.reactivex.Single
 import io.reactivex.subjects.PublishSubject
 import okhttp3.OkHttpClient
@@ -58,7 +57,7 @@ class OlaDownloadManager
     }
 
     private fun resumeDownload() {
-        if (downloading.size == 0 && isConnected()) {
+        if (downloading.size == 0 && isConnected) {
             downloadNextItem()
         }
     }
@@ -71,13 +70,13 @@ class OlaDownloadManager
             item.file = fileProvider.getDownloadedFile(item.url)
             item.isLoadedFromCache = true
             item.endTime = System.currentTimeMillis()
-            item.state  = SongDownloadState.DOWNLOADED
+            item.state = SongDownloadState.DOWNLOAD_COMPLETE
 
             downloadStatePublisher.onNext(item)
         } else if (!downloading.contains(item)) {
             downloadQueue.add(item)
 
-            if (downloading.size == 0 && isConnected()) {
+            if (downloading.size == 0 && isConnected) {
                 downloadNextItem()
             }
         }
@@ -101,7 +100,7 @@ class OlaDownloadManager
                 .subscribe({ file ->
                     item.file = file
                     item.endTime = System.currentTimeMillis()
-                    item.state  = SongDownloadState.DOWNLOADED
+                    item.state = SongDownloadState.DOWNLOAD_COMPLETE
 
                     downloadStatePublisher.onNext(item)
                     downloading.remove(item)
@@ -135,6 +134,6 @@ class OlaDownloadManager
         }
     }
 
-    private fun isConnected() = connectivityManager.activeNetworkInfo.isConnected
+    private val isConnected: Boolean get() = connectivityManager.activeNetworkInfo?.isConnected ?: false
 
 }

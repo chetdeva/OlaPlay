@@ -10,7 +10,7 @@ import com.chetdeva.olaplay.BuildConfig
 const val SONG_URL = "song_url"
 const val SONG = "song"
 const val NAVIGATE_TO = "navigate_to"
-const val NAVIGATE_TO_PLAYER = "mp"
+const val NAVIGATE_TO_PLAYER = "player"
 const val SPLASH_DELAY_IN_MILLIS = 500L
 const val APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID
 const val MAIN_ACTION = APP_PACKAGE_NAME + ".action.main"

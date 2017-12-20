@@ -32,12 +32,4 @@ class PlaylistModel
                 .onErrorResumeNext(Flowable.empty())
                 .toLiveData()
     }
-
-    fun getSong(url: String): LiveData<Song> {
-        song = playlistRepository.getSong(url)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .toLiveData()
-        return song
-    }
 }
